@@ -80,7 +80,7 @@ export async function updateProduct(req, res) {
       }
 
       const image_url = req.file
-        ? `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`
+        ? `${req.protocol}://${req.get("host")}/uploads/${req.imageFolder}/${req.file.filename}`
         : product.image;
       product.image = image_url;
       product.name = name;

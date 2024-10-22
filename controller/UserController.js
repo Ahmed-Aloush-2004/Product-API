@@ -31,7 +31,6 @@ export async function login(req, res) {
   }
 }
 
-
 export async function getUserProfile(req, res) {
   const userId = req.userId;
 
@@ -39,14 +38,8 @@ export async function getUserProfile(req, res) {
     const user = await User.findById(userId);
 
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "user not found!" });
+      return res.status(404).json({ message: "user not found!" });
     }
-
-  
-
-   
 
     return res.status(200).json({ user });
   } catch (error) {
@@ -55,7 +48,23 @@ export async function getUserProfile(req, res) {
       .json({ message: error.message || "Internal Server Error" });
   }
 }
+export async function getMe(req, res) {
+  const userId = req.userId;
 
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(403).json({ message: "Unauthorize" });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: error.message || "Internal Server Error" });
+  }
+}
 
 export async function signup(req, res) {
   const { username, password, email, role } = req.body;
@@ -69,7 +78,7 @@ export async function signup(req, res) {
     if (existUser) {
       return res.status(409).json({ message: "Something went wrong!" });
     }
-  
+
     const salt = await bcrypt.genSalt(10);
 
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -85,7 +94,7 @@ export async function signup(req, res) {
 
     const token = generateJWT({ userId: newUser._id });
 
-    return res.status(200).json({ token , user });
+    return res.status(200).json({ token, user });
   } catch (error) {
     return res
       .status(500)
