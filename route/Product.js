@@ -1,7 +1,7 @@
 import express from "express";
 import { Router } from "express";
-import { authMid } from "../middleware/authMid.js";
-import { upload } from "../middleware/multerMid.js";
+import { authMid,authorizeRole } from "../middleware/authMid.js";
+import { imageUploadFolder, upload } from "../middleware/multerMid.js";
 import multer from "multer";
 import {
   addProduct,
@@ -66,7 +66,7 @@ router.post(
   "/add",
   authMid,
   authorizeRole("admin"),
-  upload.single("image"),
+  imageUploadFolder("products"),
   addProduct
 );
 
@@ -74,7 +74,7 @@ router.put(
   "/:id",
   authMid,
   authorizeRole("admin"),
-  upload.single("image"),
+  imageUploadFolder("products"),
   updateProduct
 );
 
