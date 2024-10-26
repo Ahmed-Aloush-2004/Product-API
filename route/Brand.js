@@ -12,15 +12,21 @@ import { imageUploadFolder } from "../middleware/multerMid.js";
 
 const router = Router();
 
-router.get("/", authMid, getBrands);
+router.get(
+  "/",
+
+  // authMid,
+
+  getBrands
+);
 
 router.get("/:id", authMid, getBrandById);
 
 router.post(
   "/add",
   imageUploadFolder("brands"),
-  authMid,
-  authorizeRole("admin"),
+  //   authMid,
+  //   authorizeRole("admin"),
   addBrand
 );
 

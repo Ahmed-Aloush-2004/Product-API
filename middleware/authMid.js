@@ -3,27 +3,30 @@ import jwt from "jsonwebtoken";
 export async function authMid(req, res, next) {
   try {
     const token = req.headers.authorization?.split(" ")[1];
-    
+
     if (!token) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    console.log(token,"1");
+   
 
-    
     const { userId } = jwt.verify(token, process.env.SECRET_KEY);
-    
+
     // const user = await User.findById(id);
-    
-    if (!userId) {
+console.log("this is a userId from authMidlleware",userId);
+
+    if (userId == null || userId == undefined) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    console.log(token,"2");
-
 
     req.userId = userId;
 
     next();
   } catch (error) {
+
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Token expired. Please log in again." });
+    }
+
     throw new Error(error);
   }
 }

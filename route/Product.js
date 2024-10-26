@@ -64,16 +64,16 @@ router.get("/:id", getProductById);
 
 router.post(
   "/add",
-  authMid,
-  authorizeRole("admin"),
+  // authMid,
+  // authorizeRole("admin"),
   imageUploadFolder("products"),
   addProduct
 );
 
 router.put(
   "/:id",
-  authMid,
-  authorizeRole("admin"),
+  // authMid,
+  // authorizeRole("admin"),
   imageUploadFolder("products"),
   updateProduct
 );
